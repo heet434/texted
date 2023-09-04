@@ -2,7 +2,7 @@ TARGET=texted
 CXX=g++ 
 DEBUG=-g
 OPT=-O0
-WARN=-Wall -Wno-unknown-pragmas
+WARN=-w -Wno-unknown-pragmas
 NCURSES=-lncurses
 CXXFLAGS=$(DEBUG) $(OPT) $(WARN) $(NCURSES) -pipe -std=c++17
 LD=g++

@@ -8,5 +8,6 @@ int main( int argc , char **argv ){
     auto texted = std::make_shared<TextEd>("");
     texted->run();
   }
+  //echo();
   return 0;
 }

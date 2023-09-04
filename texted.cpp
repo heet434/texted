@@ -4,7 +4,7 @@ TextEd::TextEd(const std::string& file){
 
   x = y = 0;
   mode = 'n';
-  status = " NORMAL";
+  status = " VIEW";
   section = {};
 
   if(file.empty()){
@@ -29,6 +29,8 @@ TextEd::~TextEd(){
 }
 
 void TextEd::run(){
+	//printw("press i to go to insert mode, q to quit. In insert mode, press escape to go back to view mode.\n");
+	//refresh();
   while(mode != 'q'){
     update(); 
     statusline();
@@ -41,7 +43,7 @@ void TextEd::run(){
 void TextEd::update(){
   switch (mode){
     case 'n':
-      status = " NORMAL";
+      status = " VIEW";
       break;
     case 'i':
       status = " INSERT";
@@ -58,7 +60,7 @@ void TextEd::statusline(){
 
   //start_color();
   if(mode == 'n'){
-    init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
   }else{
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
   }
@@ -95,6 +97,8 @@ void TextEd::input(int c){
 
   switch (mode){
     case 27:
+    	//printw("press:\ni for insert mode\nn for normal mode\nw to save the file\n q to quit\n");
+    	//refresh();
     case 'n':
       switch (c){
         case 'q':
@@ -106,9 +110,15 @@ void TextEd::input(int c){
         case 'w':
           mode = 'w';
           save();
-          //refresh();
-          //endwin();
-          std::printf("Saved!\n");
+          refresh();
+          endwin();
+          std::printf("\nSaved!\n");
+          echo();
+          nocbreak();
+          system("stty echo");
+          system("reset");
+          system("clear");
+          system("echo 'saved!'");
           exit(0);
           // TODO save withot exit
           break;
@@ -118,6 +128,8 @@ void TextEd::input(int c){
       switch (c){
         case 27:
           mode = 'n';
+          //printw("press:\ni for insert mode\nn for normal mode\nq to quit\n");
+          //refresh();
           break;
         case 127:
         case KEY_BACKSPACE:
